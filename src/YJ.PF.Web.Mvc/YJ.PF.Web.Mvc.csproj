@@ -10,6 +10,12 @@
     <RootNamespace>YJ.PF.Web</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Areas\Area\**" />
+    <Content Remove="Areas\Area\**" />
+    <EmbeddedResource Remove="Areas\Area\**" />
+    <None Remove="Areas\Area\**" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="app.config" />
     <None Update="Dockerfile">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -53,10 +59,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.ViewCompilation" Version="2.2.0" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\Area\Controllers\" />
-    <Folder Include="Areas\Area\Data\" />
-    <Folder Include="Areas\Area\Models\" />
-    <Folder Include="Areas\Area\Views\" />
     <Folder Include="wwwroot\view-resources\Views\_Bundles\" />
   </ItemGroup>
 </Project>

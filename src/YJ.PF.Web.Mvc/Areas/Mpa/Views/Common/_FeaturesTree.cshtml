@@ -1,0 +1,5 @@
+﻿@using YJ.PF.Web.Areas.Mpa.Models.Common
+@model IFeatureEditViewModel
+<div class="feature-tree">
+    @await Html.PartialAsync("~/Areas/Mpa/Views/Common/_FeaturesTreeItem.cshtml", new FeatureTreeItemModel(Model, null))
+</div>

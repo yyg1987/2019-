@@ -1,0 +1,114 @@
+﻿@using YJ.PF.Web.Models.Common.Modals
+@model YJ.PF.Web.Areas.Mpa.Models.NoteBook.EditNoteBookViewModel
+@{
+    Layout = null;
+}
+@await Html.PartialAsync("~/Views/Shared/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("Edit")))
+
+<div class="modal-body">
+    <form name="NoteBookEditForm" role="form" novalidate class="form-validation">
+        <input type="hidden" name="Id" value="@Model.NoteBookEditDto.Id" />
+        <ul class="nav nav-tabs tab-nav-right" role="tablist">
+            <li role="presentation" class="active"><a href="#edit-notebook-details" data-toggle="tab">@L("NoteBookDetails")</a></li>
+            <li role="presentation"><a href="#edit-notebook-remark" data-toggle="tab">@L("Remark")</a></li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane animated fadeIn active" id="edit-notebook-details">
+
+                <div class="row clearfix" style="margin-top:10px;">
+                    <div class="col-sm-12">
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input id="name" type="text" name="Name" value="@Model.NoteBookEditDto.Name" required maxlength="64" minlength="2" class="validate form-control">
+                                <label for="name" class="form-label">@L("Name")</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-sm-6">
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input id="description" type="text" name="Description" value="@Model.NoteBookEditDto.Description"  maxlength="1024" class="validate form-control">
+                                <label for="description" class="form-label">@L("Description")</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-sm-12">
+                        <div class="checkbox">
+                            <input type="checkbox" name="Type" value="00" id="Type" class="filled-in" checked />
+                            <label for="Type">@L("Type")</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-sm-12">
+                        <div class="checkbox">
+                            <input type="checkbox" name="Status" value="00" id="Status" class="filled-in" checked />
+                            <label for="Status">@L("Status")</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-sm-12">
+                        <div class="checkbox">
+                            <input type="checkbox" name="IsActive" value="true" id="IsActive" class="filled-in" checked />
+                            <label for="IsActive">@L("IsActive")</label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div role="tabpanel" class="tab-pane animated fadeIn" id="edit-notebook-remark">
+                <div class="row clearfix" style="margin-top:10px;">
+                    <div class="col-sm-6">
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input id="creationuser" type="text" name="CreationUser" value="@Model.NoteBookEditDto.CreationUser" disabled maxlength="64" class="validate form-control">
+                                <label for="creationuser" class="form-label">@L("CreationUser")</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input id="updateuser" type="text" name="UpdateUser" value="@Model.NoteBookEditDto.UpdateUser" disabled maxlength="64" class="validate form-control">
+                                <label for="updateuser" class="form-label">@L("UpdateUser")</label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row clearfix" style="margin-top:10px;">
+                    <div class="col-sm-6">
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input id="creationtime" type="text" name="CreationTime" value="@Model.NoteBookEditDto.CreationTime" disabled class="validate form-control">
+                                <label for="creationtime" class="form-label">@L("CreationTime")</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input id="updatetime" type="text" name="UpdateTime" value="@Model.NoteBookEditDto.UpdateTime" disabled class="validate form-control">
+                                <label for="updatetime" class="form-label">@L("UpdateTime")</label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+@await Html.PartialAsync("~/Views/Shared/Modals/_ModalFooterWithSaveAndCancel.cshtml")
+
+<script src="~/view-resources/Areas/Mpa/Views/NoteBook/_EditNoteBookModal.js" asp-append-version="true"></script>

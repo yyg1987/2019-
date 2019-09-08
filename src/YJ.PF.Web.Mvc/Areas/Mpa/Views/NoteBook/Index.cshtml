@@ -1,0 +1,209 @@
+﻿@using YJ.PF.NoteBooks.Authorization
+@using YJ.PF.Web.Startup
+@model YJ.PF.Web.Areas.Mpa.Models.NoteBook.NoteBookViewModel
+@{
+    ViewBag.CurrentPageName = PageNames.NoteBook; // The menu item will be active for this page.
+}
+@section scripts
+{
+    <environment names="Development">
+        @*<script src="~/view-resources/Views/Users/Index.js" asp-append-version="true"></script>*@
+        <script src="~/view-resources/Areas/Mpa/Views/NoteBook/Index.js" asp-append-version="true"></script>
+    </environment>
+
+    <environment names="Staging,Production">
+        <script src="~/view-resources/Areas/Mpa/Views/NoteBook/Index.min.js" asp-append-version="true"></script>
+    </environment>
+}
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    @L("NoteBook")
+                </h2>
+                <ul class="header-dropdown m-r--5">
+                    <li class="dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <i class="material-icons">more_vert</i>
+                        </a>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a id="RefreshButton" href="javascript:void(0);" class="waves-effect waves-block"><i class="material-icons">refresh</i>@L("Refresh")</a></li>
+                            <li><a id="CreateButton" href="#" class="waves-effect waves-block" data-toggle="modal" data-target="#NoteBookEditModal"><i class="material-icons">create</i>@L("Create")</a></li>
+                            <li><a id="CreateButton1" href="#" class="waves-effect waves-block"  data-toggle="modal" data-target="#NoteBookEditModal"><i class="material-icons">edit</i>@L("Edit")</a></li>
+
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="body table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>@L("Type")</th>
+                            <th>@L("Name")</th>
+                            <th>@L("Description")</th>
+                            <th>@L("Status")</th>
+                            <th>@L("CreationUser")</th>
+                            <th>@L("UpdateUser")</th>
+                            <th>@L("CreationTime")</th>
+                            <th>@L("UpdateTime")</th>
+                            <th>@L("IsActive")</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var noteBook in Model.NoteBookListDto)
+                        {
+                            <tr>
+                                <td>@noteBook.Type</td>
+                                <td>@noteBook.Name</td>
+                                <td>@noteBook.Description</td>
+                                <td><i class="material-icons" style="color:@(noteBook.Status=="00"? "green":"red");">@(noteBook.Status == "00" ? "check_box" : "indeterminate_check_box")</i></td>
+                                <td>@noteBook.CreationUser</td>
+                                <td>@noteBook.UpdateUser</td>
+                                <td>@noteBook.CreationTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                <td>@noteBook.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                <td><i class="material-icons" style="color:@(noteBook.IsActive ? "green":"red");">@(noteBook.IsActive ? "check_box" : "indeterminate_check_box")</i></td>
+
+                                <td class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="material-icons">menu</i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="#" class="waves-effect waves-block edit-notebook" data-notebook-id="@noteBook.Id" data-toggle="modal" data-target="#NoteBookEditModal"><i class="material-icons">edit</i>@L("Edit")</a></li>
+                                        <li><a href="#" class="waves-effect waves-block delete-notebook" data-notebook-id="@noteBook.Id" data-notebook-name="@noteBook.Name"><i class="material-icons">delete_sweep</i>@L("Delete")</a></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <button type="button" class="btn btn-primary btn-circle waves-effect waves-circle waves-float pull-right" data-toggle="modal" data-target="#NoteBookCreateModal">
+                    <i class="material-icons">add</i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="NoteBookCreateModal" tabindex="-1" role="dialog" aria-labelledby="NoteBookCreateModalLabel" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>@L("Create")</span>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form name="noteBookCreateForm" role="form" novalidate class="form-validation">
+                    <ul class="nav nav-tabs tab-nav-right" role="tablist">
+                        <li role="presentation" class="active"><a href="#create-notebook-details" data-toggle="tab">@L("NoteBookDetails")</a></li>
+                        <li role="presentation"><a href="#create-notebook-remark" data-toggle="tab">@L("Remark")</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane animated fadeIn active" id="create-notebook-details">
+                            <div class="row clearfix" style="margin-top:10px;">
+                                <div class="col-sm-12">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input class="form-control" type="text" name="Name" required maxlength="64" minlength="2">
+                                            <label class="form-label">@L("Name")</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-sm-6">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" name="Description" class="form-control" maxlength="1024">
+                                            <label class="form-label">@L("Description")</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-sm-12">
+                                    <div class="checkbox">
+                                        <input type="checkbox" name="Type" value="00" id="Type" class="filled-in" checked />
+                                        <label for="Type">@L("Type")</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-sm-12">
+                                    <div class="checkbox">
+                                        <input type="checkbox" name="Status" value="00" id="Status" class="filled-in" checked />
+                                        <label for="Status">@L("Status")</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-sm-12">
+                                    <div class="checkbox">
+                                        <input type="checkbox" name="IsActive" value="true" id="IsActive" class="filled-in" checked />
+                                        <label for="IsActive">@L("IsActive")</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div role="tabpanel" class="tab-pane animated fadeIn" id="create-notebook-remark">
+                            <div class="row clearfix" style="margin-top:10px;">
+                                <div class="col-sm-6">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input class="form-control" type="text" name="CreationUser" disabled maxlength="64">
+                                            <label class="form-label">@L("CreationUser")</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" name="UpdateUser" class="form-control" disabled maxlength="64">
+                                            <label class="form-label">@L("UpdateUser")</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row clearfix" style="margin-top:10px;">
+                                <div class="col-sm-6">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" name="CreationTime" value="@DateTime.Now" disabled class="form-control datetime-picker">
+                                            <label class="form-label">@L("CreationTime")</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" name="UpdateTime" value="@DateTime.Now" disabled class="form-control datetime-picker">
+                                            <label class="form-label">@L("UpdateTime")</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">@L("Cancel")</button>
+                        <button type="submit" class="btn btn-primary waves-effect">@L("Save")</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="NoteBookEditModal" tabindex="-1" role="dialog" aria-labelledby="NoteBookEditModalLabel" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
